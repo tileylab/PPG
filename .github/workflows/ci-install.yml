@@ -40,11 +40,11 @@ jobs:
             pip install pytest pytest-cov
 
       - name: Check help menu
-        run: estploidy --help
+        run: popopolus --help
 
       - name: Run tests
         run:  |
-          pytest test/ --cov=estploidy --cov-report=xml
+          pytest test/ --cov=popopolus --cov-report=xml
   
   conda-test:
     name: Test conda install
@@ -71,20 +71,20 @@ jobs:
         shell: bash -el {0}
         run: |
           conda env create -f environment.yml
-          conda activate estploidy
+          conda activate popopolus
           pip install pytest pytest-cov
 
       - name: Check help menu
         shell: bash -el {0}
         run: |
-          conda activate estploidy
-          estploidy --help
+          conda activate popopolus
+          popopolus --help
 
       - name: Run tests
         shell: bash -el {0}
         run: |
-          conda activate estploidy
-          pytest test/ --cov=estploidy --cov-report=xml
+          conda activate popopolus
+          pytest test/ --cov=popopolus --cov-report=xml
 
 
     # Revisit the idea of a codecov badge but check on app install specifics
@@ -99,7 +99,7 @@ jobs:
 #      - name: Create an array of the average allele balance in popultions
 #        id: calc-freqs-check
 #        run: |
-#            estploidy calculate_pop_freqs -i tests/freqs/ex.vcf -o tests/freqs/popfreqs.txt tests/freqs/samplesheet
+#            popopolus calculate_pop_freqs -i tests/freqs/ex.vcf -o tests/freqs/popfreqs.txt tests/freqs/samplesheet
 #            echo "sample output from build"
 #            head tests/freqs/popfreqs.txt
 #            echo "sample expected output"
