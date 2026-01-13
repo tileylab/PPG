@@ -1,0 +1,85 @@
+Model for ploidy = 2
+Fitted GMM parameters:
+Means:
+ [[0.5]]
+Covariances:
+ [[[0.03157197]]]
+Weights:
+ [1.]
+Best likelihood: 0.30882004900272947
+BIC: -631.5303580869067
+
+Model for ploidy = 3
+Fitted GMM parameters:
+Means:
+ [[0.33333333]
+ [0.66666667]]
+Covariances:
+ [[[0.01661235]]
+
+ [[0.0161412 ]]]
+Weights:
+ [0.5192231 0.4807769]
+Best likelihood: 0.2712698643129115
+BIC: -532.1951555919906
+
+Model for ploidy = 4
+Fitted GMM parameters:
+Means:
+ [[0.25]
+ [0.5 ]
+ [0.75]]
+Covariances:
+ [[[0.00220529]]
+
+ [[0.00296695]]
+
+ [[0.00214421]]]
+Weights:
+ [0.24618764 0.51411294 0.23969943]
+Best likelihood: 0.5657810150143531
+BIC: -1126.8681440648068
+
+Model for ploidy = 5
+Fitted GMM parameters:
+Means:
+ [[0.2]
+ [0.4]
+ [0.6]
+ [0.8]]
+Covariances:
+ [[[0.00182486]]
+
+ [[0.01472675]]
+
+ [[0.01496446]]
+
+ [[0.00128298]]]
+Weights:
+ [0.07128896 0.43905487 0.41499246 0.07466371]
+Best likelihood: 0.35824323954855836
+BIC: -672.2588768480989
+
+Model for ploidy = 6
+Fitted GMM parameters:
+Means:
+ [[0.16666667]
+ [0.33333333]
+ [0.5       ]
+ [0.66666667]
+ [0.83333333]]
+Covariances:
+ [[[0.0037504 ]]
+
+ [[0.0093949 ]]
+
+ [[0.00137246]]
+
+ [[0.00923028]]
+
+ [[0.00350724]]]
+Weights:
+ [0.01890093 0.31957696 0.33637534 0.29504846 0.03009832]
+Best likelihood: 0.4302450055738613
+BIC: -801.8872513477854
+
