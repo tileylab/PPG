@@ -44,7 +44,9 @@ def cli():
     print(f'Created logfile {logfile}')
 
 
-
+#----------------
+# Site frequency spectrum and diversity statistics
+#----------------
 @cli.command(context_settings={'help_option_names': ['-h','--help']})
 @click.argument('sample_sheet',type=str)
 @click.option('-v', '--vcf_file', type=str, default='dummy.vcf', required=True,
@@ -94,6 +96,63 @@ def individual_genotypes(sample_sheet, vcf_file, minimum_depth, minimum_count, m
     compute_time = (end_time - start_time) / 60
     logging.info(f'Total compute time was {compute_time} minutes')
 
+@cli.command(context_settings={'help_option_names': ['-h','--help']})
+@click.argument('sample_sheet',type=str)
+@click.option('-v', '--vcf_file', type=str, default='dummy.vcf', required=True,
+              help = 'name of the input vcf file. should not be compressed.'
+)
+@click.option('-i', '--imputation_method', type=str, default='drop', required=False,
+              help = 'decide how to impute missing data if at all. options are: drop, mean, and popmean'
+)
+@click.option('-d', '--minimum_depth', type=int, default=10, required=False,
+              help = 'The minimum depth of a site to be treated as data'
+)
+@click.option('-c', '--minimum_count', type=int, default=3, required=False,
+              help = 'The minimum count of the minor allele for a site to be treated as data'
+)
+@click.option('-q', '--minimum_quality', type=int, default=20, required=False,
+              help = 'The minimum phred-scaled genotype quality score'
+)
+@click.option('-f', '--pass_flag', type=str, default='PASS', required=False,
+              help = 'Does the VCF have an PASS field or something else to condider like a "."'
+)
+@click.option('-l', '--interval', type=str, default='0', required=False,
+              help = 'The window size and step size for calculating theta in the format window:step e.g., 10000:5000. The default of 0 will calculate genome-wide theta.'
+)
+@click.option('-o', '--output_dir', type=str, default='dummy', required=False,
+              help = 'name of the directory where . will be a matrix of allele frequencies'
+)
+def estimate_theta_watterson(sample_sheet, vcf_file, minimum_depth, minimum_count, minimum_quality, imputation_method, pass_flag, interval, output_dir):
+    from popopolus.utils import map_individuals
+    from popopolus.utils import check_dir
+    from popopolus.utils import get_vcf_dimensions
+    from popopolus.calculate_frequencies.calculate_frequencies import get_ind_genotypes
+    from popopolus.diversity_statistics.theta import estimate_wattersons
+
+    start_time = time.process_time()
+    logging.info(f'Begin at {start_time}')
+    logging.info(f'Checking all individuals in {sample_sheet} are present in {vcf_file}')
+    ind_map = map_individuals(sample_sheet)
+    logging.info(f'Checking dimensions of VCF')
+    n_sites, n_tax = get_vcf_dimensions(vcf_file, pass_flag, ind_map)
+    logging.info(f'Calculating individual allele frequencies from {vcf_file}')
+    if (imputation_method == 'drop'):
+        if (output_dir != 'dummy'):
+            check_dir(output_dir)
+            logging.info(f'Matrix of allele frequencies for each individual will be written to: {output_dir}')
+        tax_list, genotype_dat = get_ind_genotypes(n_sites, n_tax, ind_map, vcf_file, minimum_depth, minimum_count, minimum_quality, pass_flag, output_dir)
+        theta_df = estimate_wattersons(genotype_dat, tax_list, ind_map, interval, output_dir)
+        print(theta_df)
+    else:
+        click.echo(f'Warning: Imputation method {imputation_method} is not supported. Skipping allele frequencies.')
+    end_time = time.process_time()
+    logging.info(f'End at {end_time}')
+    compute_time = (end_time - start_time) / 60
+    logging.info(f'Total compute time was {compute_time} minutes')
+
+#----------------
+# Ploidy estimation
+#----------------
 @cli.command(context_settings={'help_option_names': ['-h','--help']})
 @click.argument('sample_sheet',type=str)
 @click.option('-v', '--vcf_file', type=str, default='dummy.vcf', required=True,
